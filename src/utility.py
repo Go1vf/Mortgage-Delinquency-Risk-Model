@@ -2,6 +2,35 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+def read_multiple_csv_files(file_paths: list, chunk_size: int = 100000) -> pd.DataFrame:
+    """
+    Reads multiple CSV files in chunks into one pandas DataFrame.
+
+    Parameters:
+    file_paths (list): List of file paths to the CSV files.
+    chunk_size (int): The number of rows per chunk to read at a time.
+
+    Returns:
+    pd.DataFrame: A pandas DataFrame containing the data from all the CSV files.
+    """
+    # Initialize an empty DataFrame to hold all chunks
+    all_chunks = []
+    
+    # Loop through each file path
+    for file_path in file_paths:
+        # Read the CSV file in chunks
+        chunk_iter = pd.read_csv(file_path, chunksize=chunk_size)
+        
+        # Extend the list with the chunks
+        all_chunks.extend(chunk_iter)
+        print(f"Finished reading {file_path}.")
+    
+    # Concatenate all chunks into a single DataFrame at once
+    full_df = pd.concat(all_chunks, ignore_index=True)
+    print("Finished reading all files.")
+    
+    return full_df
+
 def analyze_dataframe(df):
     """
     Analyzes the given DataFrame by printing the distribution of each column

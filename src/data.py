@@ -165,7 +165,7 @@ def classify_servicer_type(seller_name):
 
 
 def process_data(df):
-    columns = ['LOAN_ID', 'ACT_PERIOD',
+    columns = ['LOAN_ID', 'ACT_PERIOD', 'original_rate', 'orginal_credit_score', 'original_loan_to_value', 'curr_unpaid',
     'seller_type', 'servicer_type', 'channel_type', 'adjusted_remaining_time', 
     'num_borrowers', 'purpose', 'property_type', 'occupancy_status', 'state', 
     'default_status', 'mod_indicator', 
@@ -173,6 +173,15 @@ def process_data(df):
     'high_balance_loan_indicator', 'htlv_indicator', 
     'payment_deferral'
     ]
+
+    # Orginal Rate
+    df['original_rate'] = df['ORIG_RATE']
+    # Credit Score
+    df['orginal_credit_score'] = df['CSCORE_B']
+    # Original loan to value ratio
+    df['original_loan_to_value'] = df['OLTV']
+
+    df['curr_unpaid'] = df['CURRENT_UPB']
     # ['Mortgage Company' 'Other' 'Bank' 'Investor']
     df['seller_type'] = df['SELLER'].apply(classify_seller)
     # ['Mortgage Company' 'Other' 'Bank']
@@ -245,7 +254,6 @@ def save_output(df, original_file_path, new_directory):
 def run(original_file_path, new_directory):
     print("Loading CSV data...")
     df = load_and_concat_csv(original_file_path, lppub_column_names, lppub_column_classes)
-    df = drop_na_columns(df)
 
     # 2. Process the data (cleaning and transformations)
     print("Processing data...")
