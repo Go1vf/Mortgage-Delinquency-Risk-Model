@@ -31,4 +31,5 @@ Clone this repository and install the required Python packages using:
 ```bash
 git clone https://your-repository-link.git
 cd Mortgage-Delinquency-Prediction
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate mortgage-delinquency-prediction
